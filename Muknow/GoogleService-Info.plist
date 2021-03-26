@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>379040111848-6fm8h265lb12ene9840q2k3k399kbsm1.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.379040111848-6fm8h265lb12ene9840q2k3k399kbsm1</string>
+	<key>ANDROID_CLIENT_ID</key>
+	<string>379040111848-f8u6ecah9k52cof9fmp2sjpahs971hvc.apps.googleusercontent.com</string>
+	<key>API_KEY</key>
+	<string>AIzaSyCBeTOVnJe-skQE772wehxhzW7Os4S2pLg</string>
+	<key>GCM_SENDER_ID</key>
+	<string>379040111848</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.biipbyte.Muknow</string>
+	<key>PROJECT_ID</key>
+	<string>muknow-notifications</string>
+	<key>STORAGE_BUCKET</key>
+	<string>muknow-notifications.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:379040111848:ios:67a516f6c297f49940bd5d</string>
+	<key>DATABASE_URL</key>
+	<string>https://muknow-notifications.firebaseio.com</string>
+</dict>
+</plist>

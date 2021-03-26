@@ -11,8 +11,22 @@ import UIKit
 class ProfileTableViewCell: UITableViewCell {
 
     @IBOutlet var lblProfileListName: UILabel!
-    
     @IBOutlet var layoutView: UIView!
+    
+    @IBOutlet var view1: UIView!
+    
+    
+    @IBOutlet var view1Height: NSLayoutConstraint!
+    
+    
+    
+    
+    @IBOutlet var prifileNameLbl: UILabel!
+    
+    
+    @IBOutlet var profileImg: UIImageView!
+    
+    
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -25,4 +39,8 @@ class ProfileTableViewCell: UITableViewCell {
         // Configure the view for the selected state
     }
 
+    
+ 
+    
+    
 }

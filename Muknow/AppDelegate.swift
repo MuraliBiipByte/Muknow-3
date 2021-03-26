@@ -8,18 +8,174 @@
 
 import UIKit
 import CoreData
+import UserNotifications
+import Firebase
+import FirebaseAuth
+import Stripe
+import IQKeyboardManagerSwift
 
+
+@available(iOS 10.0, *)
 @UIApplicationMain
-class AppDelegate: UIResponder, UIApplicationDelegate {
+class AppDelegate: UIResponder, UIApplicationDelegate,UNUserNotificationCenterDelegate,MessagingDelegate {
 
+//    MessagingDelegate
     var window: UIWindow?
-
-
+    var tooltip :Bool?
+    var storyboard:UIStoryboard!
+    var userId :String?
+    var isGuide : Bool = false
+    
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
+        
+        UITabBar.appearance().tintColor = APPEARENCE_COLOR
+        STPAPIClient.shared().publishableKey = STRIPE_SMILES_PUBLISHABLE_KEY
+        IQKeyboardManager.shared.enable = true
+        
+        isGuide = UserDefaults.standard.bool(forKey: "user_guide")
+       /* if isGuide {
+            
+            let storyboard = UIStoryboard(name: "Main", bundle: nil)
+            let mainViewController = storyboard.instantiateViewController(withIdentifier: "HomeTabbar") as! UITabBarController
+            let window = UIApplication.shared.delegate!.window!
+            window?.rootViewController = mainViewController
+            
+//            let storyboard = UIStoryboard(name: "Main", bundle: nil)
+//
+//            let mainViewController = storyboard.instantiateViewController(withIdentifier: "LoginViewController") as! LoginViewController
+//            let window = UIApplication.shared.delegate!.window!
+//            window?.rootViewController = mainViewController
+
+            
+            
+        }else{
+            
+            let storyboard = UIStoryboard(name: "WalkthroughStoryboard", bundle: nil)
+            
+            let mainViewController = storyboard.instantiateViewController(withIdentifier: "WalkthroughViewController") as! WalkthroughViewController
+            let window = UIApplication.shared.delegate!.window!
+            window?.rootViewController = mainViewController
+            
+        } */
+        
+        if isGuide {
+            
+            let storyboard = UIStoryboard(name: "Main", bundle: nil)
+            let mainViewController = storyboard.instantiateViewController(withIdentifier: "theNavigationVCSBID") as! UINavigationController
+            
+            let window = UIApplication.shared.delegate!.window!
+            window?.rootViewController = mainViewController
+
+        }else{
+            
+            let storyboard = UIStoryboard(name: "WalkthroughStoryboard", bundle: nil)
+            let mainViewController = storyboard.instantiateViewController(withIdentifier: "WalkthroughViewController") as! WalkthroughViewController
+            let window = UIApplication.shared.delegate!.window!
+            window?.rootViewController = mainViewController
+            
+        }
+        
+        
+        
+        //         userId = UserDefaults.standard.string(forKey: "user_id")
+        //        if userId == nil {
+        //
+        //            let storyboard = UIStoryboard(name: "WalkthroughStoryboard", bundle: nil)
+        //
+        //            let mainViewController = storyboard.instantiateViewController(withIdentifier: "WalkthroughViewController") as! WalkthroughViewController
+        //            let window = UIApplication.shared.delegate!.window!
+        //            window?.rootViewController = mainViewController
+        //        }else{
+        //
+        ////            let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        ////
+        ////            let mainViewController = storyboard.instantiateViewController(withIdentifier: "LoginViewController") as! LoginViewController
+        ////            let window = UIApplication.shared.delegate!.window!
+        ////            window?.rootViewController = mainViewController
+//
+        ////            let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        ////            let mainViewController = storyboard.instantiateViewController(withIdentifier: "TabbarVC") as! TabbarVC
+        ////           let window = UIApplication.shared.delegate!.window!
+        ////           window?.rootViewController = mainViewController
+        //
+        //            let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        //            let mainViewController = storyboard.instantiateViewController(withIdentifier: "HomeTabbar") as! UITabBarController
+        //            let window = UIApplication.shared.delegate!.window!
+        //            window?.rootViewController = mainViewController
+        //
+        //        }
+        //        if tooltip == true
+        //        {
+        //            tooltip = false
+        //            let mainViewController = self.storyboard?.instantiateViewController(withIdentifier: "TutorialPageViewController") as! TutorialPageViewController
+        //            let window = UIApplication.shared.delegate!.window!
+        //            window?.rootViewController = mainViewController
+        //        }
+        //        else{
+        //
+        //            let mainViewController = self.storyboard?.instantiateViewController(withIdentifier: "Nav") as! UINavigationController
+        //                       let window = UIApplication.shared.delegate!.window!
+        //                       window?.rootViewController = mainViewController
+        //
+        //
+        //        }
+        
+        
+        FirebaseApp.configure()
+        registerForNotifications()
+        Messaging.messaging().delegate = self
+        
+        
+        
         return true
     }
 
+    
+    func registerForNotifications()
+    {
+        UNUserNotificationCenter.current().delegate = self
+        let authOptions: UNAuthorizationOptions = [.alert, .badge, .sound]
+        UNUserNotificationCenter.current().requestAuthorization(options: authOptions,completionHandler: {_, _ in
+            
+            DispatchQueue.main.async
+                {
+                    UIApplication.shared.registerForRemoteNotifications()
+            }
+        })
+    }
+    
+    func messaging(_ messaging: Messaging, didReceiveRegistrationToken fcmToken: String)
+    {
+        print("Firebase registration token: \(fcmToken)")
+        UserDefaults.standard.set(fcmToken, forKey: "fcm_Token")
+
+    }
+    
+    func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
+        print("Successfully registered for notifications!")
+//        let deviceTokenString = deviceToken.hexString
+//          print(deviceTokenString)
+        
+        let token = deviceToken.map { String(format: "%02.2hhx", $0) }.joined()
+            print("Device Token = ",token)
+    }
+//
+//    var hexString: String {
+//          let hexString = map { String(format: "%02.2hhx", $0) }.joined()
+//          return hexString
+//      }
+    func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void)
+    {
+        
+        completionHandler([.alert, .badge, .sound])
+    }
+    func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void)
+    {
+        print(response)
+    }
+   
+    
     func applicationWillResignActive(_ application: UIApplication) {
         // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
         // Use this method to pause ongoing tasks, disable timers, and invalidate graphics rendering callbacks. Games should use this method to pause the game.
@@ -41,6 +197,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func applicationWillTerminate(_ application: UIApplication) {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
         // Saves changes in the application's managed object context before the application terminates.
+        tooltip = false
         self.saveContext()
     }
 
@@ -88,6 +245,5 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             }
         }
     }
-
 }
 

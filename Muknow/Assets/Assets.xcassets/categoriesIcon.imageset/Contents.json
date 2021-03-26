@@ -2,17 +2,15 @@
   "images" : [
     {
       "idiom" : "universal",
-      "filename" : "ic_view_carousel_24px-blue.png",
       "scale" : "1x"
     },
     {
       "idiom" : "universal",
-      "filename" : "ic_view_carousel_24px-blue-1.png",
+      "filename" : "categories-48-48.png",
       "scale" : "2x"
     },
     {
       "idiom" : "universal",
-      "filename" : "ic_view_carousel_24px-blue-2.png",
       "scale" : "3x"
     }
   ],

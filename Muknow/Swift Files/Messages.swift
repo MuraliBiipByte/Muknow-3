@@ -10,7 +10,7 @@ import UIKit
 
 final class Message
 {
-  
+    
     static let shared = Message()
     
     func Alert(Title:String,Message:String, TitleAlign:AlertTextAllignment, MessageAlign:AlertTextAllignment,Actions:[UIAlertAction],Controller:UIViewController)
@@ -45,10 +45,27 @@ final class Message
         for Action in Actions {
             Alert.addAction(Action)
         }
-        
-        Controller.present(Alert, animated: true, completion: nil)
 
+        Controller.present(Alert, animated: true, completion: nil)
+        
     }
+    
+    class func AlertActionWithSelector(Title:NSString,Selector:Selector,Controller:UIViewController) -> UIAlertAction
+    {
+        let Action = UIAlertAction.init(title: Title as String, style: UIAlertAction.Style.default, handler: { (AlertAction:UIAlertAction) in
+            
+            Controller.perform(Selector)
+            
+        })
+        return Action
+    }
+    
+    class func AlertActionWithOutSelector(Title:NSString) -> UIAlertAction
+    {
+        let Action = UIAlertAction.init(title: Title as String, style: UIAlertAction.Style.default, handler: nil)
+        return Action
+    }
+
     
     enum AlertTextAllignment {
         case left,right,normal
