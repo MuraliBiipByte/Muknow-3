@@ -1,0 +1,6 @@
+framework module Pods_Muknow {
+  umbrella header "Pods-Muknow-umbrella.h"
+
+  export *
+  module * { export * }
+}
